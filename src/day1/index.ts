@@ -27,7 +27,6 @@ export function part2(data: string[]) {
                 return r
             }
         })
-        console.log(nums, mapped)
         const n = [_.head(mapped), _.last(mapped)].join('')
         return Number(n)
     })
