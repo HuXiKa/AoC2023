@@ -6,10 +6,10 @@ export function parseInput() {
 }
 
 const neighbours = {
-    left:[-1,+0],
-    top:[+0,-1],
-    right:[1,+0],
-    bottom:[+0,1]
+    left:[0,-1],
+    top:[-1,0],
+    right:[0,+1],
+    bottom:[+1,0]
 }
 
 export function part1(data: string[]) {    
@@ -41,13 +41,13 @@ export function part1(data: string[]) {
     let v = [] as typeof c[]
     
     while(running) {
+        if(c.v === tiles.S && v.length > 0){
+            running = false
+        }  
         console.log('current', c)
         console.log('visited', v)
         const nn = neightbours.filter(n => outofBound(c,n,width,height)).map(n => {return {l: {r: n[0], c:n[1]}, v: map[c.l.r + n[0]][c.l.c + n[1]]}}).filter(n => canTravel(c,n))
-        console.log('nn', nn)
-        if(nn.some(i => i.v === tiles.S)){
-            running = false
-        }                
+        console.log('nn', nn)              
         v = [...v, c]
         const next = nn.filter(n => !v.some(v => v.l.r == c.l.r + n.l.r && v.l.c == c.l.c + n.l.c))
         console.log('next', next)
@@ -93,9 +93,9 @@ function convert(data: string[]): number[][] {
     return data.map(l => [...l].map(c => tiles[c]))
 }
 
-function canTravel(t: { l: { c: number; r: number; }; v: number; }, n: { l: { c: number; r: number; }; v: number; }): boolean {
-    const canAccept = tileConnections.get(t.v)!.some(c => c[0] === n.l.r && c[1] === n.l.c)
-    const canComeTo = tileConnections.get(n.v)!.some(c => c[0] === -n.l.c && c[1] === -n.l.r)
-    console.log(t, n, canAccept, canComeTo)
+function canTravel(current: { l: { c: number; r: number; }; v: number; }, targetDirection: { l: { c: number; r: number; }; v: number; }): boolean {
+    const canAccept = tileConnections.get(current.v)!.some(c => c[0] === targetDirection.l.r && c[1] === targetDirection.l.c)
+    const canComeTo = tileConnections.get(targetDirection.v)!.some(c => c[0] === -targetDirection.l.c && c[1] === -targetDirection.l.r)
+    console.log(current, targetDirection, canAccept, canComeTo)
     return canAccept && canComeTo
 }
