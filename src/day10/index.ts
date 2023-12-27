@@ -92,14 +92,14 @@ export async function part2(data: string[]) {
     const fmw = fillMap[0].length - 1
     const fmh = fillMap.length - 1
 
-    const fill = [[0,0],[0,fmw],[fmh,0],[fmh,fmw]];
+    const fill = [[0,0],[0,fmw],[fmh,0],[fmh,fmw]]
 
 	while (fill.length > 0) {
-		let [i, j] = fill.shift()!;
+		let [i, j] = fill.shift()!
         neightbours.filter(n => outofBound({l: {r: i, c: j}} as any,n,fmw,fmh)).map(n => {return {r: i + n[0], c:j + n[1]}}).forEach(n => {
             if (!fillMap[n.r][n.c]) {
-                fillMap[n.r][n.c] = true;
-                fill.push([n.r, n.c]);
+                fillMap[n.r][n.c] = true
+                fill.push([n.r, n.c])
             }
 		})
     }
